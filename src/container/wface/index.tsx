@@ -10,7 +10,7 @@ interface WFaceProps {
 
 const WFace: FC<WFaceProps> = ({ configuration }) => {
   const children = useMemo(() => {
-    let result = <WApp />;    
+    let result = <WApp />;
 
     if (configuration.api) {
       result = <ApiContextProvider>{result}</ApiContextProvider>;
@@ -20,11 +20,11 @@ const WFace: FC<WFaceProps> = ({ configuration }) => {
   }, [configuration.api]);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={(configuration?.basename)??undefined}>
       <UserContextProvider useLocalStorage={configuration.useLocalStorage} projectName={configuration.projectName}>
         <AppContextProvider>
           <ConfigContextProvider configuration={configuration}>
-            {children}           
+            {children}
           </ConfigContextProvider>
         </AppContextProvider>
       </UserContextProvider>
