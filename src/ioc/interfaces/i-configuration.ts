@@ -7,7 +7,7 @@ import React from 'react';
 
 export default interface IConfiguration {
   projectName: string,
-  basename: string,
+  basename?: string,
   components?: IComponents;
 
   screenList: { [key: string]: any };
