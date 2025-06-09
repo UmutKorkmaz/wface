@@ -1,5 +1,6 @@
 export * from './w-button';
 export * from './w-button-group';
+export * from './w-floating-action-button';
 export * from './w-icon-button';
 export * from './w-loading-button';
 export * from './w-speed-dial';
