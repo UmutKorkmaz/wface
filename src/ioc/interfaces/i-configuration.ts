@@ -4,10 +4,14 @@ import { WTheme } from '../../components';
 import { RecursivePartial } from '../..';
 import { AppContext } from '../../store';
 import React from 'react';
+import { IWebViewOptions } from '../../hooks/webview';
 
 export default interface IConfiguration {
   projectName: string,
   basename?: string,
+  hideSidebar?: boolean,
+  hideTopbar?: boolean,
+  customTopbar?: any,
   components?: IComponents;
 
   screenList: { [key: string]: any };
@@ -43,9 +47,9 @@ export default interface IConfiguration {
     renderSearchItem: (item: any, appContext: AppContext) => React.ReactNode;
     onItemSelected: (item: any, appContext: AppContext) => void;
   };
-
   wrapApp?: (children: JSX.Element) => JSX.Element;
   useTranslation?: () => {
     t: (key: string) => string;
-  }
+  };
+  webviewOptions?: IWebViewOptions;
 }

@@ -22,6 +22,8 @@ import { FC, useState, useCallback, useEffect, useMemo } from "react";
 import { useConfiguration } from "../../../store";
 import { Box } from "@mui/material";
 import ToolBar from "./toolbar";
+import "../../../assets/wface-sidebar.css";
+import "../../../assets/wface-webview.css";
 
 //#endregion
 
@@ -117,11 +119,11 @@ const WMainPage: FC = () => {
   const [isMenuTreeLoading, setIsMenuTreeLoading] = useState<boolean>(true);
   const authService = configuration.useAuthService();
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const [drawerOpen, setDrawerOpen] = useState<boolean>(
+  const { pathname } = useLocation();  const [drawerOpen, setDrawerOpen] = useState<boolean>(
     Horizontal.getType() == WindowWidthType.LG
   );
   const topHeight = 48;
+  const effectiveTopHeight = configuration.hideTopbar ? 0 : topHeight;
   const getScreenUrl = useCallback(
     (screen: IMenuTreeItem) => "/" + screen.screen,
     []
@@ -139,9 +141,7 @@ const WMainPage: FC = () => {
     });
 
     return result;
-  }, [appContext.menuTree]);
-
-  const onMenuItemClicked = useCallback(
+  }, [appContext.menuTree]);  const onMenuItemClicked = useCallback(
     (screen: IMenuTreeItem) => {
       if (Horizontal.getType() !== WindowWidthType.LG) {
         setDrawerOpen(false);
@@ -169,28 +169,39 @@ const WMainPage: FC = () => {
 
     setIsMenuTreeLoading(false);
   }, [appContext.setMenuTree, authService.getMenuTree]);
-
   useEffect(() => {
     loadMenuTree();
-  }, [loadMenuTree]);
 
-  return (
-    <div className={classes.root + " main-page"}>
-      <WAppBar
-        id="main-app-bar"
-        position="fixed"
-        className={classes.appBar}
-        elevation={theme.designDetails?.defaultElevation}
-      >
-        <ToolBar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-      </WAppBar>
-      <WDrawer
+    // Debug logging for hideTopbar configuration
+    if (process.env.NODE_ENV === 'development') {
+      console.log('WFace Configuration:', {
+        hideTopbar: configuration.hideTopbar,
+        hideSidebar: configuration.hideSidebar,
+        customTopbar: !!configuration.customTopbar,
+        effectiveTopHeight
+      });
+    }
+  }, [loadMenuTree, configuration.hideTopbar, effectiveTopHeight]);return (
+    <div className={classes.root + " main-page" + (configuration.hideTopbar ? " wface-no-topbar" : "")}>
+      {!configuration.hideTopbar && (
+        <WAppBar
+          id="main-app-bar"
+          position="fixed"
+          className={classes.appBar}
+          elevation={theme.designDetails?.defaultElevation}
+        >          {configuration.customTopbar ? (
+            React.createElement(configuration.customTopbar, { drawerOpen, setDrawerOpen })
+          ) : (
+            <ToolBar drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+          )}
+        </WAppBar>      )}      <WDrawer
         variant="persistent"
         open={drawerOpen}
         anchor="left"
         classes={{
           paper: classes.drawerPaper,
         }}
+        className={configuration.hideSidebar ? 'wface-hidden-sidebar' : ''}
         PaperProps={{
           // @ts-ignore
           style: {
@@ -200,62 +211,59 @@ const WMainPage: FC = () => {
           },
           elevation: theme.designDetails?.defaultElevation || 0,
         }}
-      >
-        <div style={{ minHeight: topHeight }} />
-        <div
-          style={{ height: `calc(100% - ${topHeight}px)`, overflow: "none" }}
-        >
-          <WScrollBar>
-            <NavList onItemClicked={onMenuItemClicked} />
-          </WScrollBar>
+      >          <div style={{ minHeight: effectiveTopHeight }} />
           <div
-            style={{
-              display: "table",
-              position: "absolute",
-              bottom: 0,
-              height: 25,
-              width: "100%",
-            }}
+            style={{ height: `calc(100% - ${effectiveTopHeight}px)`, overflow: "none" }}
           >
+            <WScrollBar>
+              <NavList onItemClicked={onMenuItemClicked} />
+            </WScrollBar>
             <div
               style={{
-                display: "table-cell",
-                verticalAlign: "middle",
-                textAlign: "center",
+                display: "table",
+                position: "absolute",
+                bottom: 0,
+                height: 25,
+                width: "100%",
               }}
             >
-              <span style={{ color: "#9c9999", fontSize: 10 }}>
-                Developed based on{" "}
-                <a
-                  style={{
-                    fontWeight: 600,
-                    textDecoration: "none",
-                    color: "#888",
-                  }}
-                  href="http://wface.digiturk.io"
-                  target="_blank"
-                >
-                  WFace
-                </a>
-              </span>
+              <div
+                style={{
+                  display: "table-cell",
+                  verticalAlign: "middle",
+                  textAlign: "center",
+                }}
+              >
+                <span style={{ color: "#9c9999", fontSize: 10 }}>
+                  Developed based on{" "}
+                  <a
+                    style={{
+                      fontWeight: 600,
+                      textDecoration: "none",
+                      color: "#888",
+                    }}
+                    href="http://wface.digiturk.io"
+                    target="_blank"
+                  >
+                    WFace
+                  </a>
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      </WDrawer>
-
-      <Box
+        </WDrawer>      <Box
         className={classNames(classes.content, classes[`content-left`], {
           [classes.contentShift]: drawerOpen,
           [classes[`contentShift-left`]]: drawerOpen,
-        })}
+        }, configuration.hideSidebar ? 'wface-sidebar-hidden-content' : '')}
         component="main"
         sx={theme.designDetails?.mainSx}
-      >
-        <div style={{ minHeight: topHeight }} />
-        <WScrollBar>
+      >        <div style={{ minHeight: effectiveTopHeight }} />        <WScrollBar>
           <Box
             style={{
-              minHeight: `calc(100vh - ${topHeight}px - 16px)`,
+              minHeight: `calc(100vh - ${effectiveTopHeight}px - 16px)`,
+              padding: configuration.hideTopbar ? '8px' : undefined,
+              height: configuration.hideTopbar ? 'calc(100vh - 16px)' : undefined,
             }}
             sx={theme.designDetails?.pageSx}
           >

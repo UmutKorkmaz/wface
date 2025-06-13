@@ -1,0 +1,24 @@
+/* WFace Sidebar Hiding Styles */
+.wface-hidden-sidebar {
+  width: 0 !important;
+  transform: translateX(-100%) !important;
+  visibility: hidden !important;
+  overflow: hidden !important;
+}
+
+.wface-hidden-sidebar .MuiDrawer-paper {
+  width: 0 !important;
+  transform: translateX(-100%) !important;
+  visibility: hidden !important;
+  overflow: hidden !important;
+}
+
+.wface-sidebar-hidden-content {
+  margin-left: 0 !important;
+  transition: margin-left 250ms ease !important;
+}
+
+/* Ensure hidden sidebar doesn't interfere with layout */
+.wface-hidden-sidebar+.wface-sidebar-hidden-content {
+  margin-left: 0 !important;
+}

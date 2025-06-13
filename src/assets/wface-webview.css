@@ -1,0 +1,61 @@
+/* WFace WebView and Hide Topbar Styles */
+
+/* Base webview mode styles */
+.webview-mode {
+  /* Add base styling for webview mode */
+}
+
+/* Hide topbar styles - applied when hideTopbar is true */
+.wface-no-topbar {
+  height: 100vh !important;
+}
+
+.wface-no-topbar .MuiAppBar-root,
+.wface-no-topbar #main-app-bar,
+.wface-no-topbar .wface-app-bar,
+.wface-no-topbar .custom-topbar {
+  display: none !important;
+}
+
+.wface-no-topbar .content {
+  height: 100vh !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.wface-no-topbar main {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Ensure main content area uses full height */
+.wface-no-topbar .main-page {
+  height: 100vh !important;
+  overflow: hidden;
+}
+
+.wface-no-topbar .main-page .content {
+  height: 100vh !important;
+}
+
+/* Hide sidebar styles - applied when hideSidebar is true */
+.wface-hidden-sidebar {
+  display: none !important;
+}
+
+.wface-sidebar-hidden-content {
+  margin-left: 0 !important;
+}
+
+/* Debug styles - can be removed in production */
+.wface-debug .main-page {
+  border: 2px solid red !important;
+}
+
+.wface-debug .content {
+  border: 2px solid blue !important;
+}
+
+.wface-debug .MuiBox-root {
+  border: 1px solid green !important;
+}
