@@ -20,7 +20,7 @@ const WFace: FC<WFaceProps> = ({ configuration }) => {
   }, [configuration.api]);
 
   return (
-    <BrowserRouter basename={(configuration?.basename)??undefined}>
+    <BrowserRouter basename={(configuration?.basename) ?? undefined} >
       <UserContextProvider useLocalStorage={configuration.useLocalStorage} projectName={configuration.projectName}>
         <AppContextProvider>
           <ConfigContextProvider configuration={configuration}>

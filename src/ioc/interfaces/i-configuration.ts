@@ -12,6 +12,7 @@ export default interface IConfiguration {
   hideSidebar?: boolean,
   hideTopbar?: boolean,
   customTopbar?: any,
+  defaultRoute?: string,
   components?: IComponents;
 
   screenList: { [key: string]: any };

@@ -36,7 +36,7 @@ const WDefaultContainer: FC<any> = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/main" />} />
+      <Route path="/" element={<Navigate to={configuration.defaultRoute || '/main'} />} />
 
       <Route
         path="/login"
